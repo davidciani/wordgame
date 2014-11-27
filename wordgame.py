@@ -67,7 +67,7 @@ def score(str):
         scoresum = scoresum + values[letter]
     return scoresum
 
-def loadWordlist(wordlistfile=defaultWordlist):
+def loadWordlist(wordlistfile=open(defaultWordlist)):
     wordlist = []
     for line in wordlistfile:
         wordlist.append(line.strip())
