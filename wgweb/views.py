@@ -5,7 +5,7 @@ from operator import itemgetter
 
 @app.route('/')
 def index():
-    return 'Hello World!'
+    return render_template('index.html')
 
 @app.route('/_findwords')
 def findwords():

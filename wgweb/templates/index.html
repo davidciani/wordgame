@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <title>Wordgame Dictionary Tool</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+
+
+    function fetchWords() {
+        $.getJSON($SCRIPT_ROOT + '/_findwords', {
+            hand: $('input[name="hand"]').val(),
+            prefix: $('input[name="prefix"]').val(),
+            suffix: $('input[name="suffix"]').val(),
+            required: $('input[name="required"]').val()
+        }, responseHandler );
+        return false;
+    }
+
+
+    function responseHandler(data) {
+            $('table#results tbody > tr').remove();
+        $.each(data.words, function(i,item) {
+                $('<tr>').append(
+                $('<td>').text(item.word),
+                $('<td>').text(item.score),
+                $('<td>').text(item.length)
+                ).appendTo('table#results tbody');
+
+        });
+    }
+
+
+
+    $(function() {
+        $('a#lookup').bind('click', fetchWords);
+    });
+
+    </script>
+</head>
+
+<body>
+    <h1>Wordgame Dictionary Tool</h1>
+    <p>
+        <input type=text size=7 name=hand>
+        <input type=text size=2 name=prefix>
+        <input type=text size=2 name=suffix>
+        <input type=text size=2 name=required>
+        <a href=# id=lookup>lookup</a>
+    </p>
+    <table id=results>
+        <thead>
+        <tr>
+            <th>Word</th>
+            <th>Score</th>
+            <th>Length</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</body>
+
+</html>
+
