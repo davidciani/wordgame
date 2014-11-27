@@ -65,6 +65,23 @@ def score(str):
         scoresum = scoresum + values[letter]
     return scoresum
 
+def loadWordlist(wordlistfile=defaultWordlist):
+    wordlist = []
+    for line in wordlistfile:
+        wordlist.append(line.strip())
+    return sorted(wordlist)
+
+def findWords(hand,prefix='',suffix='',required='', wordlist=loadWordlist()):
+    candidates = []
+    hand = list(hand)
+    hand.append(required)
+    for i in range(1, len(hand)+1):
+        for word in permutations(hand,i):
+            word = prefix+''.join(word)+suffix
+            if not str(word).find(required) and word not in candidates and search(wordlist,word):
+                candidates.append(word)
+    return candidates
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f','--file', dest='wordlistfile',
@@ -77,44 +94,18 @@ def main():
     parser.add_argument('hand')
 
     args = parser.parse_args()
+    
+    wordlist = loadWordlist(args.wordlistfile)
+    
+    results = findWords(args.hand,args.prefix,args.suffix,args.required,wordlist)
 
-    wordlist = []
-    for line in args.wordlistfile:
-        wordlist.append(line.strip())
-    wordlist.sort()
+    print results
+        #print str(len(words[k])) + " " + num[k+len(args.prefix)+len(args.suffix)] + " letter words found: "
 
-    candidates = {}
-    for i in range(1, len(args.hand)+1):
-        candidates[i] = []
-        hand = list(args.hand)
-        hand.append(args.required)
-        for permutation in permutations(hand,i):
-            if(str(permutation).find(args.required) >= 0):
-                candidates[i].append(args.prefix+''.join(permutation)+args.suffix)
-    if args.verbose:
-       print candidates
-
-    words = {}
-
-    for k,v in candidates.iteritems():
-        words[k] = []
-        removeDuplicates(v);
-
-        for word in v:
-            if search(wordlist,word):
-                words[k].append(word);
-
-
-    for k in sorted(words.keys(),reverse=True):
-        if len(words[k]) == 0:
-            continue
-
-        print str(len(words[k])) + " " + num[k+len(args.prefix)+len(args.suffix)] + " letter words found: "
-
-        output = ""
-        for i in range(len(words[k])):
-            output = output + "{}{} ".format(words[k][i],score(words[k][i]))
-        print fill(output,60)
+        #output = ""
+        #for i in range(len(words[k])):
+        #    output = output + "{}{} ".format(words[k][i],score(words[k][i]))
+        #print fill(output,60)
 
 if __name__ == "__main__":
     main()
