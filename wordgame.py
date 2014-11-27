@@ -4,6 +4,8 @@ import argparse, sys
 from textwrap import fill
 from itertools import permutations
 from bisect import bisect_left
+from pprint import pprint
+from operator import itemgetter
 
 num = {
         1 : 'one',
@@ -80,7 +82,11 @@ def findWords(hand,prefix='',suffix='',required='', wordlist=loadWordlist()):
             word = prefix+''.join(word)+suffix
             if not str(word).find(required) and word not in candidates and search(wordlist,word):
                 candidates.append(word)
-    return candidates
+                yield {
+                    'word': word,
+                    'score': score(word),
+                    'length': len(word)
+                }
 
 def main():
     parser = argparse.ArgumentParser()
@@ -99,13 +105,11 @@ def main():
     
     results = findWords(args.hand,args.prefix,args.suffix,args.required,wordlist)
 
-    print results
-        #print str(len(words[k])) + " " + num[k+len(args.prefix)+len(args.suffix)] + " letter words found: "
+    print '{:<10}{:>8}{:>8}'.format('Word','Score','Length')
+    print '-'*10+'-'*8+'-'*8
 
-        #output = ""
-        #for i in range(len(words[k])):
-        #    output = output + "{}{} ".format(words[k][i],score(words[k][i]))
-        #print fill(output,60)
+    for word in sorted(results,key=itemgetter('score','length'), reverse=True):
+            print '{word:<10}{score:>8}{length:>8}'.format(**word)
 
 if __name__ == "__main__":
     main()
