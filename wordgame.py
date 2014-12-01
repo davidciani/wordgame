@@ -46,7 +46,7 @@ values = {
     'z': 10,
 }
 
-defaultWordlist = "/usr/share/dict/enable1.txt"
+defaultWordlist = "enable1.txt"
 
 # Removes Duplicates from a list
 def removeDuplicates(lst):
