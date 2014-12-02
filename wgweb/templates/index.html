@@ -3,7 +3,14 @@
 <head>
     <meta charset=utf-8>
     <title>Wordgame Dictionary Tool</title>
+     
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+   
     <script type=text/javascript>
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
 
@@ -34,22 +41,54 @@
 
 
     $(function() {
-        $('a#lookup').bind('click', fetchWords);
+        $('button#lookup').bind('click', fetchWords);
     });
 
     </script>
 </head>
 
 <body>
-    <h1>Wordgame Dictionary Tool</h1>
-    <p>
-    Hand: <input type=text size=7 name=hand><br>
-    Prefix: <input type=text size=2 name=prefix><br>
-    Suffix: <input type=text size=2 name=suffix><br>
-    Required: <input type=text size=2 name=required><br>
-        <a href=# id=lookup>lookup</a>
-    </p>
-    <table id=results>
+    <div class=container>
+        <div class=header>
+            <h1 class=text-center>Wordgame Dictionary Tool</h1>
+        </div>
+        
+    <hr>
+    <div class=row>
+    <div class=col-md-4>
+    <form role=form class=form-horizontal>
+        <div class=form-group>
+            <label for=hand class="col-sm-3 control-label">Hand</label>
+            <div class=col-sm-9>
+                <input type=text class=form-control name=hand>
+            </div>
+        </div>
+        <div class=form-group>
+            <label for=prefix class="col-sm-3 control-label">Prefix</label>
+            <div class=col-sm-9>
+                <input type=text class=form-control name=prefix>
+            </div>
+        </div>
+        <div class=form-group>
+            <label for=suffix class="col-sm-3 control-label">Suffix</label>
+            <div class=col-sm-9>
+                <input type=text class=form-control name=suffix>
+            </div>
+        </div>
+        <div class=form-group>
+            <label for=required class="col-sm-3 control-label">Required</label>
+            <div class=col-sm-9>
+                <input type=text class=form-control name=required>
+            </div>
+        </div>
+        <div class=form-group>
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type=submit id=lookup class="btn btn-default">Lookup</button>
+            </div>
+        </div>
+    </div>
+    <div class=col-md-8>
+    <table id=results class="table table-striped table-condensed">
         <thead>
         <tr>
             <th>Word</th>
@@ -60,6 +99,9 @@
         <tbody>
         </tbody>
     </table>
+    </div>
+    </div>
+    </div>
 </body>
 
 </html>
