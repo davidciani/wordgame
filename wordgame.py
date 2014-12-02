@@ -80,7 +80,7 @@ def findWords(hand,prefix='',suffix='',required='', wordlist=loadWordlist()):
     for i in range(1, len(hand)+1):
         for word in permutations(hand,i):
             word = prefix+''.join(word)+suffix
-            if not str(word).find(required) and word not in candidates and search(wordlist,word):
+            if (not required or required in str(word)) and word not in candidates and search(wordlist,word):
                 candidates.append(word)
                 yield {
                     'word': word,
